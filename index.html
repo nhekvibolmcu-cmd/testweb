@@ -6,6 +6,7 @@
     <title>Alex Morgan | Portfolio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/space-grotesk@5.0.8/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-khmer@5.0.8/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
@@ -29,6 +30,10 @@
             --gradient-1: linear-gradient(135deg, #6c63ff, #00d4aa);
             --gradient-2: linear-gradient(135deg, #ff6b9d, #6c63ff);
             --gradient-3: linear-gradient(135deg, #00d4aa, #00b4d8);
+            --font-en: 'Inter', 'Noto Sans Khmer', sans-serif;
+            --font-kh: 'Noto Sans Khmer', 'Inter', sans-serif;
+            --font-heading-en: 'Space Grotesk', 'Noto Sans Khmer', sans-serif;
+            --font-heading-kh: 'Noto Sans Khmer', 'Space Grotesk', sans-serif;
         }
 
         html {
@@ -36,15 +41,26 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-en);
             background: var(--bg-dark);
             color: var(--text-primary);
             overflow-x: hidden;
             line-height: 1.6;
         }
 
+        body.lang-kh {
+            font-family: var(--font-kh);
+        }
+
         h1, h2, h3, h4 {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: var(--font-heading-en);
+        }
+
+        body.lang-kh h1,
+        body.lang-kh h2,
+        body.lang-kh h3,
+        body.lang-kh h4 {
+            font-family: var(--font-heading-kh);
         }
 
         /* Scrollbar */
@@ -100,6 +116,7 @@
             display: flex;
             gap: 2rem;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
@@ -128,6 +145,50 @@
 
         .nav-links a:hover::after {
             width: 100%;
+        }
+
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 4px;
+            gap: 2px;
+            margin-left: 0.5rem;
+        }
+
+        .lang-btn {
+            padding: 0.4rem 0.85rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .lang-btn.active {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 2px 10px rgba(108, 99, 255, 0.3);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: var(--text-primary);
+            background: rgba(108, 99, 255, 0.1);
+        }
+
+        .lang-flag {
+            font-size: 1rem;
+            line-height: 1;
         }
 
         .nav-toggle {
@@ -279,6 +340,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            font-family: inherit;
         }
 
         .btn-primary {
@@ -1002,7 +1064,7 @@
             border: 1px solid var(--border);
             border-radius: 10px;
             color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
+            font-family: inherit;
             font-size: 0.95rem;
             transition: all 0.3s ease;
             outline: none;
@@ -1036,7 +1098,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
+            font-family: inherit;
         }
 
         .btn-submit:hover {
@@ -1133,10 +1195,16 @@
                 padding: 1.5rem 2rem;
                 gap: 1.25rem;
                 border-bottom: 1px solid var(--border);
+                align-items: flex-start;
             }
 
             .nav-links.active {
                 display: flex;
+            }
+
+            .lang-switcher {
+                margin-left: 0;
+                margin-top: 0.5rem;
             }
 
             .nav-toggle {
@@ -1193,6 +1261,11 @@
             z-index: 0;
             transition: transform 0.15s ease;
         }
+
+        /* Language transition */
+        [data-i18n] {
+            transition: opacity 0.2s ease;
+        }
     </style>
 </head>
 <body>
@@ -1203,12 +1276,22 @@
         <div class="nav-container">
             <div class="nav-logo">AM.</div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#home" data-i18n="nav.home">Home</a></li>
+                <li><a href="#about" data-i18n="nav.about">About</a></li>
+                <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+                <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+                <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
+                <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+                <li>
+                    <div class="lang-switcher">
+                        <button class="lang-btn active" data-lang="en" aria-label="English">
+                            <span class="lang-flag">🇬🇧</span> EN
+                        </button>
+                        <button class="lang-btn" data-lang="kh" aria-label="Khmer">
+                            <span class="lang-flag">🇰🇭</span> ខ្មែរ
+                        </button>
+                    </div>
+                </li>
             </ul>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
@@ -1226,36 +1309,35 @@
         <div class="hero-content">
             <div class="hero-badge">
                 <span class="dot"></span>
-                Available for freelance work
+                <span data-i18n="hero.badge">Available for freelance work</span>
             </div>
             <h1 class="hero-title">
-                Hi, I'm <span class="highlight">Alex Morgan</span><br>
-                Full-Stack Developer
+                <span data-i18n="hero.greeting">Hi, I'm</span> <span class="highlight">Alex Morgan</span><br>
+                <span data-i18n="hero.role">Full-Stack Developer</span>
             </h1>
-            <p class="hero-subtitle">
-                I craft beautiful, performant web experiences with modern technologies. 
-                Turning complex problems into elegant digital solutions.
+            <p class="hero-subtitle" data-i18n="hero.subtitle">
+                I craft beautiful, performant web experiences with modern technologies. Turning complex problems into elegant digital solutions.
             </p>
             <div class="hero-buttons">
                 <a href="#projects" class="btn btn-primary">
-                    <i class="fas fa-rocket"></i> View My Work
+                    <i class="fas fa-rocket"></i> <span data-i18n="hero.btnWork">View My Work</span>
                 </a>
                 <a href="#contact" class="btn btn-secondary">
-                    <i class="fas fa-envelope"></i> Get In Touch
+                    <i class="fas fa-envelope"></i> <span data-i18n="hero.btnContact">Get In Touch</span>
                 </a>
             </div>
             <div class="hero-stats">
                 <div class="stat">
                     <div class="stat-number">5+</div>
-                    <div class="stat-label">Years Experience</div>
+                    <div class="stat-label" data-i18n="hero.statYears">Years Experience</div>
                 </div>
                 <div class="stat">
                     <div class="stat-number">50+</div>
-                    <div class="stat-label">Projects Completed</div>
+                    <div class="stat-label" data-i18n="hero.statProjects">Projects Completed</div>
                 </div>
                 <div class="stat">
                     <div class="stat-number">30+</div>
-                    <div class="stat-label">Happy Clients</div>
+                    <div class="stat-label" data-i18n="hero.statClients">Happy Clients</div>
                 </div>
             </div>
         </div>
@@ -1264,9 +1346,9 @@
     <!-- About Section -->
     <section id="about">
         <div class="section-header reveal">
-            <p class="section-tag">About Me</p>
-            <h2 class="section-title">Passionate About Creating Impact</h2>
-            <p class="section-desc">A developer who loves turning ideas into reality through code</p>
+            <p class="section-tag" data-i18n="about.tag">About Me</p>
+            <h2 class="section-title" data-i18n="about.title">Passionate About Creating Impact</h2>
+            <p class="section-desc" data-i18n="about.desc">A developer who loves turning ideas into reality through code</p>
         </div>
         <div class="about-grid">
             <div class="about-image reveal">
@@ -1291,41 +1373,38 @@
                     </div>
                     <div class="about-float-card">
                         <i class="fas fa-code" style="color: var(--primary)"></i>
-                        <span>Clean Code</span>
+                        <span data-i18n="about.floatCode">Clean Code</span>
                     </div>
                     <div class="about-float-card">
                         <i class="fas fa-heart" style="color: var(--accent)"></i>
-                        <span>UI/UX Design</span>
+                        <span data-i18n="about.floatDesign">UI/UX Design</span>
                     </div>
                 </div>
             </div>
             <div class="about-text reveal">
-                <h3>Building Digital Experiences That Matter</h3>
-                <p>
-                    I'm a full-stack developer based in San Francisco with over 5 years of experience 
-                    building web applications. I specialize in creating scalable, user-friendly solutions 
-                    that drive business growth.
+                <h3 data-i18n="about.heading">Building Digital Experiences That Matter</h3>
+                <p data-i18n="about.p1">
+                    I'm a full-stack developer based in San Francisco with over 5 years of experience building web applications. I specialize in creating scalable, user-friendly solutions that drive business growth.
                 </p>
-                <p>
-                    When I'm not coding, you'll find me exploring new technologies, contributing to 
-                    open-source projects, or sharing knowledge through tech blogs and community meetups.
+                <p data-i18n="about.p2">
+                    When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, or sharing knowledge through tech blogs and community meetups.
                 </p>
                 <div class="about-details">
                     <div class="about-detail">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>San Francisco, CA</span>
+                        <span data-i18n="about.detail1">San Francisco, CA</span>
                     </div>
                     <div class="about-detail">
                         <i class="fas fa-briefcase"></i>
-                        <span>Full-time & Freelance</span>
+                        <span data-i18n="about.detail2">Full-time & Freelance</span>
                     </div>
                     <div class="about-detail">
                         <i class="fas fa-graduation-cap"></i>
-                        <span>CS, Stanford University</span>
+                        <span data-i18n="about.detail3">CS, Stanford University</span>
                     </div>
                     <div class="about-detail">
                         <i class="fas fa-language"></i>
-                        <span>English, Spanish</span>
+                        <span data-i18n="about.detail4">English, Khmer</span>
                     </div>
                 </div>
             </div>
@@ -1335,15 +1414,15 @@
     <!-- Skills Section -->
     <section id="skills">
         <div class="section-header reveal">
-            <p class="section-tag">My Skills</p>
-            <h2 class="section-title">Technologies I Work With</h2>
-            <p class="section-desc">Constantly learning and adapting to the latest tools and frameworks</p>
+            <p class="section-tag" data-i18n="skills.tag">My Skills</p>
+            <h2 class="section-title" data-i18n="skills.title">Technologies I Work With</h2>
+            <p class="section-desc" data-i18n="skills.desc">Constantly learning and adapting to the latest tools and frameworks</p>
         </div>
         <div class="skills-grid">
             <div class="skill-card reveal">
                 <div class="skill-icon"><i class="fas fa-palette"></i></div>
-                <h3>Frontend Development</h3>
-                <p>Building responsive and interactive user interfaces with modern frameworks</p>
+                <h3 data-i18n="skills.s1.title">Frontend Development</h3>
+                <p data-i18n="skills.s1.desc">Building responsive and interactive user interfaces with modern frameworks</p>
                 <div class="skill-tags">
                     <span class="skill-tag">React</span>
                     <span class="skill-tag">Vue.js</span>
@@ -1354,8 +1433,8 @@
             </div>
             <div class="skill-card reveal">
                 <div class="skill-icon"><i class="fas fa-server"></i></div>
-                <h3>Backend Development</h3>
-                <p>Designing robust APIs and server-side architectures for scalable applications</p>
+                <h3 data-i18n="skills.s2.title">Backend Development</h3>
+                <p data-i18n="skills.s2.desc">Designing robust APIs and server-side architectures for scalable applications</p>
                 <div class="skill-tags">
                     <span class="skill-tag">Node.js</span>
                     <span class="skill-tag">Python</span>
@@ -1366,8 +1445,8 @@
             </div>
             <div class="skill-card reveal">
                 <div class="skill-icon"><i class="fas fa-mobile-alt"></i></div>
-                <h3>Mobile Development</h3>
-                <p>Creating cross-platform mobile applications with native-like performance</p>
+                <h3 data-i18n="skills.s3.title">Mobile Development</h3>
+                <p data-i18n="skills.s3.desc">Creating cross-platform mobile applications with native-like performance</p>
                 <div class="skill-tags">
                     <span class="skill-tag">React Native</span>
                     <span class="skill-tag">Flutter</span>
@@ -1377,8 +1456,8 @@
             </div>
             <div class="skill-card reveal">
                 <div class="skill-icon"><i class="fas fa-cloud"></i></div>
-                <h3>Cloud & DevOps</h3>
-                <p>Deploying and managing applications with modern cloud infrastructure</p>
+                <h3 data-i18n="skills.s4.title">Cloud & DevOps</h3>
+                <p data-i18n="skills.s4.desc">Deploying and managing applications with modern cloud infrastructure</p>
                 <div class="skill-tags">
                     <span class="skill-tag">AWS</span>
                     <span class="skill-tag">Docker</span>
@@ -1389,8 +1468,8 @@
             </div>
             <div class="skill-card reveal">
                 <div class="skill-icon"><i class="fas fa-pencil-ruler"></i></div>
-                <h3>UI/UX Design</h3>
-                <p>Crafting intuitive and beautiful user experiences from concept to delivery</p>
+                <h3 data-i18n="skills.s5.title">UI/UX Design</h3>
+                <p data-i18n="skills.s5.desc">Crafting intuitive and beautiful user experiences from concept to delivery</p>
                 <div class="skill-tags">
                     <span class="skill-tag">Figma</span>
                     <span class="skill-tag">Adobe XD</span>
@@ -1400,8 +1479,8 @@
             </div>
             <div class="skill-card reveal">
                 <div class="skill-icon"><i class="fas fa-brain"></i></div>
-                <h3>AI & Machine Learning</h3>
-                <p>Integrating intelligent features and data-driven solutions into applications</p>
+                <h3 data-i18n="skills.s6.title">AI & Machine Learning</h3>
+                <p data-i18n="skills.s6.desc">Integrating intelligent features and data-driven solutions into applications</p>
                 <div class="skill-tags">
                     <span class="skill-tag">TensorFlow</span>
                     <span class="skill-tag">OpenAI</span>
@@ -1415,9 +1494,9 @@
     <!-- Projects Section -->
     <section id="projects">
         <div class="section-header reveal">
-            <p class="section-tag">My Work</p>
-            <h2 class="section-title">Featured Projects</h2>
-            <p class="section-desc">A selection of projects that showcase my skills and passion</p>
+            <p class="section-tag" data-i18n="projects.tag">My Work</p>
+            <h2 class="section-title" data-i18n="projects.title">Featured Projects</h2>
+            <p class="section-desc" data-i18n="projects.desc">A selection of projects that showcase my skills and passion</p>
         </div>
         <div class="projects-grid">
             <div class="project-card reveal">
@@ -1444,9 +1523,9 @@
                     </div>
                 </div>
                 <div class="project-info">
-                    <p class="project-category">Web Application</p>
+                    <p class="project-category" data-i18n="projects.p1.cat">Web Application</p>
                     <h3>TaskFlow Pro</h3>
-                    <p>A comprehensive project management platform with real-time collaboration, Kanban boards, and team analytics.</p>
+                    <p data-i18n="projects.p1.desc">A comprehensive project management platform with real-time collaboration, Kanban boards, and team analytics.</p>
                     <div class="project-tech">
                         <span>React</span>
                         <span>Node.js</span>
@@ -1454,8 +1533,8 @@
                         <span>MongoDB</span>
                     </div>
                     <div class="project-links">
-                        <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        <a href="#"><i class="fab fa-github"></i> Source Code</a>
+                        <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.liveDemo">Live Demo</span></a>
+                        <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.sourceCode">Source Code</span></a>
                     </div>
                 </div>
             </div>
@@ -1481,9 +1560,9 @@
                     </div>
                 </div>
                 <div class="project-info">
-                    <p class="project-category">Mobile App</p>
+                    <p class="project-category" data-i18n="projects.p2.cat">Mobile App</p>
                     <h3>HealthPulse</h3>
-                    <p>A health tracking mobile app with AI-powered insights, workout plans, and nutrition guidance for users.</p>
+                    <p data-i18n="projects.p2.desc">A health tracking mobile app with AI-powered insights, workout plans, and nutrition guidance for users.</p>
                     <div class="project-tech">
                         <span>React Native</span>
                         <span>Python</span>
@@ -1491,8 +1570,8 @@
                         <span>Firebase</span>
                     </div>
                     <div class="project-links">
-                        <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        <a href="#"><i class="fab fa-github"></i> Source Code</a>
+                        <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.liveDemo">Live Demo</span></a>
+                        <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.sourceCode">Source Code</span></a>
                     </div>
                 </div>
             </div>
@@ -1520,9 +1599,9 @@
                     </div>
                 </div>
                 <div class="project-info">
-                    <p class="project-category">E-Commerce</p>
+                    <p class="project-category" data-i18n="projects.p3.cat">E-Commerce</p>
                     <h3>ShopVerse</h3>
-                    <p>A modern e-commerce platform with AR product preview, smart recommendations, and seamless checkout.</p>
+                    <p data-i18n="projects.p3.desc">A modern e-commerce platform with AR product preview, smart recommendations, and seamless checkout.</p>
                     <div class="project-tech">
                         <span>Next.js</span>
                         <span>Stripe</span>
@@ -1530,8 +1609,8 @@
                         <span>AWS</span>
                     </div>
                     <div class="project-links">
-                        <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
-                        <a href="#"><i class="fab fa-github"></i> Source Code</a>
+                        <a href="#"><i class="fas fa-external-link-alt"></i> <span data-i18n="projects.liveDemo">Live Demo</span></a>
+                        <a href="#"><i class="fab fa-github"></i> <span data-i18n="projects.sourceCode">Source Code</span></a>
                     </div>
                 </div>
             </div>
@@ -1541,45 +1620,45 @@
     <!-- Experience Section -->
     <section id="experience">
         <div class="section-header reveal">
-            <p class="section-tag">Experience</p>
-            <h2 class="section-title">My Professional Journey</h2>
-            <p class="section-desc">A timeline of my career growth and achievements</p>
+            <p class="section-tag" data-i18n="exp.tag">Experience</p>
+            <h2 class="section-title" data-i18n="exp.title">My Professional Journey</h2>
+            <p class="section-desc" data-i18n="exp.desc">A timeline of my career growth and achievements</p>
         </div>
         <div class="timeline">
             <div class="timeline-item reveal">
                 <div class="timeline-dot"></div>
-                <span class="timeline-date">2023 � Present</span>
+                <span class="timeline-date">2023 — <span data-i18n="exp.present">Present</span></span>
                 <div class="timeline-content">
-                    <h3>Senior Full-Stack Developer</h3>
+                    <h3 data-i18n="exp.e1.title">Senior Full-Stack Developer</h3>
                     <h4>TechVision Inc.</h4>
-                    <p>Leading a team of 8 developers building enterprise SaaS products. Architected microservices handling 1M+ daily requests. Reduced deployment time by 60% through CI/CD optimization.</p>
+                    <p data-i18n="exp.e1.desc">Leading a team of 8 developers building enterprise SaaS products. Architected microservices handling 1M+ daily requests. Reduced deployment time by 60% through CI/CD optimization.</p>
                 </div>
             </div>
             <div class="timeline-item reveal">
                 <div class="timeline-dot"></div>
-                <span class="timeline-date">2021 � 2023</span>
+                <span class="timeline-date">2021 — 2023</span>
                 <div class="timeline-content">
-                    <h3>Full-Stack Developer</h3>
+                    <h3 data-i18n="exp.e2.title">Full-Stack Developer</h3>
                     <h4>InnovateLab</h4>
-                    <p>Developed and maintained multiple client-facing applications. Implemented real-time features using WebSockets. Mentored junior developers and conducted code reviews.</p>
+                    <p data-i18n="exp.e2.desc">Developed and maintained multiple client-facing applications. Implemented real-time features using WebSockets. Mentored junior developers and conducted code reviews.</p>
                 </div>
             </div>
             <div class="timeline-item reveal">
                 <div class="timeline-dot"></div>
-                <span class="timeline-date">2019 � 2021</span>
+                <span class="timeline-date">2019 — 2021</span>
                 <div class="timeline-content">
-                    <h3>Frontend Developer</h3>
+                    <h3 data-i18n="exp.e3.title">Frontend Developer</h3>
                     <h4>PixelCraft Studio</h4>
-                    <p>Built responsive web applications for various clients. Specialized in React ecosystem and modern CSS. Improved site performance scores by an average of 40%.</p>
+                    <p data-i18n="exp.e3.desc">Built responsive web applications for various clients. Specialized in React ecosystem and modern CSS. Improved site performance scores by an average of 40%.</p>
                 </div>
             </div>
             <div class="timeline-item reveal">
                 <div class="timeline-dot"></div>
-                <span class="timeline-date">2018 � 2019</span>
+                <span class="timeline-date">2018 — 2019</span>
                 <div class="timeline-content">
-                    <h3>Junior Developer</h3>
+                    <h3 data-i18n="exp.e4.title">Junior Developer</h3>
                     <h4>StartupHub</h4>
-                    <p>Started my professional journey building MVPs for early-stage startups. Gained experience across the full development lifecycle from concept to deployment.</p>
+                    <p data-i18n="exp.e4.desc">Started my professional journey building MVPs for early-stage startups. Gained experience across the full development lifecycle from concept to deployment.</p>
                 </div>
             </div>
         </div>
@@ -1588,9 +1667,9 @@
     <!-- Testimonials -->
     <section id="testimonials">
         <div class="section-header reveal">
-            <p class="section-tag">Testimonials</p>
-            <h2 class="section-title">What People Say</h2>
-            <p class="section-desc">Feedback from clients and colleagues I've worked with</p>
+            <p class="section-tag" data-i18n="test.tag">Testimonials</p>
+            <h2 class="section-title" data-i18n="test.title">What People Say</h2>
+            <p class="section-desc" data-i18n="test.desc">Feedback from clients and colleagues I've worked with</p>
         </div>
         <div class="testimonials-grid">
             <div class="testimonial-card reveal">
@@ -1601,12 +1680,12 @@
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                 </div>
-                <p class="testimonial-text">"Alex delivered an exceptional product that exceeded our expectations. The attention to detail and code quality was outstanding. Highly recommend!"</p>
+                <p class="testimonial-text" data-i18n="test.t1.text">"Alex delivered an exceptional product that exceeded our expectations. The attention to detail and code quality was outstanding. Highly recommend!"</p>
                 <div class="testimonial-author">
                     <div class="testimonial-avatar">SJ</div>
                     <div>
                         <div class="testimonial-name">Sarah Johnson</div>
-                        <div class="testimonial-role">CEO, TechStart Inc.</div>
+                        <div class="testimonial-role" data-i18n="test.t1.role">CEO, TechStart Inc.</div>
                     </div>
                 </div>
             </div>
@@ -1618,12 +1697,12 @@
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                 </div>
-                <p class="testimonial-text">"Working with Alex was a game-changer for our project. Their technical expertise and problem-solving skills are truly impressive. A pleasure to collaborate with."</p>
+                <p class="testimonial-text" data-i18n="test.t2.text">"Working with Alex was a game-changer for our project. Their technical expertise and problem-solving skills are truly impressive. A pleasure to collaborate with."</p>
                 <div class="testimonial-author">
                     <div class="testimonial-avatar">MR</div>
                     <div>
                         <div class="testimonial-name">Michael Rodriguez</div>
-                        <div class="testimonial-role">CTO, DataFlow Systems</div>
+                        <div class="testimonial-role" data-i18n="test.t2.role">CTO, DataFlow Systems</div>
                     </div>
                 </div>
             </div>
@@ -1635,12 +1714,12 @@
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                 </div>
-                <p class="testimonial-text">"Alex transformed our outdated platform into a modern, scalable application. Communication was excellent throughout the entire project. Will definitely work together again."</p>
+                <p class="testimonial-text" data-i18n="test.t3.text">"Alex transformed our outdated platform into a modern, scalable application. Communication was excellent throughout the entire project. Will definitely work together again."</p>
                 <div class="testimonial-author">
                     <div class="testimonial-avatar">EW</div>
                     <div>
                         <div class="testimonial-name">Emily Watson</div>
-                        <div class="testimonial-role">Product Manager, CloudNine</div>
+                        <div class="testimonial-role" data-i18n="test.t3.role">Product Manager, CloudNine</div>
                     </div>
                 </div>
             </div>
@@ -1650,21 +1729,21 @@
     <!-- Contact Section -->
     <section id="contact">
         <div class="section-header reveal">
-            <p class="section-tag">Contact</p>
-            <h2 class="section-title">Let's Work Together</h2>
-            <p class="section-desc">Have a project in mind? Let's create something amazing</p>
+            <p class="section-tag" data-i18n="contact.tag">Contact</p>
+            <h2 class="section-title" data-i18n="contact.title">Let's Work Together</h2>
+            <p class="section-desc" data-i18n="contact.desc">Have a project in mind? Let's create something amazing</p>
         </div>
         <div class="contact-wrapper">
             <div class="contact-info reveal">
-                <h3>Get In Touch</h3>
-                <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                <h3 data-i18n="contact.heading">Get In Touch</h3>
+                <p data-i18n="contact.intro">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
                 <div class="contact-methods">
                     <div class="contact-method">
                         <div class="contact-method-icon">
                             <i class="fas fa-envelope"></i>
                         </div>
                         <div class="contact-method-text">
-                            <div class="contact-method-label">Email</div>
+                            <div class="contact-method-label" data-i18n="contact.emailLabel">Email</div>
                             <div>alex.morgan@email.com</div>
                         </div>
                     </div>
@@ -1673,7 +1752,7 @@
                             <i class="fas fa-phone"></i>
                         </div>
                         <div class="contact-method-text">
-                            <div class="contact-method-label">Phone</div>
+                            <div class="contact-method-label" data-i18n="contact.phoneLabel">Phone</div>
                             <div>+1 (555) 123-4567</div>
                         </div>
                     </div>
@@ -1682,8 +1761,8 @@
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div class="contact-method-text">
-                            <div class="contact-method-label">Location</div>
-                            <div>San Francisco, CA</div>
+                            <div class="contact-method-label" data-i18n="contact.locationLabel">Location</div>
+                            <div data-i18n="contact.location">San Francisco, CA</div>
                         </div>
                     </div>
                 </div>
@@ -1697,24 +1776,24 @@
             <form class="contact-form reveal" id="contactForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="name">Your Name</label>
-                        <input type="text" id="name" placeholder="John Doe" required>
+                        <label for="name" data-i18n="contact.nameLabel">Your Name</label>
+                        <input type="text" id="name" data-i18n-placeholder="contact.namePlaceholder" placeholder="John Doe" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Your Email</label>
-                        <input type="email" id="email" placeholder="john@example.com" required>
+                        <label for="email" data-i18n="contact.emailInputLabel">Your Email</label>
+                        <input type="email" id="email" data-i18n-placeholder="contact.emailPlaceholder" placeholder="john@example.com" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" placeholder="Project Discussion">
+                    <label for="subject" data-i18n="contact.subjectLabel">Subject</label>
+                    <input type="text" id="subject" data-i18n-placeholder="contact.subjectPlaceholder" placeholder="Project Discussion">
                 </div>
                 <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" placeholder="Tell me about your project..." required></textarea>
+                    <label for="message" data-i18n="contact.messageLabel">Message</label>
+                    <textarea id="message" data-i18n-placeholder="contact.messagePlaceholder" placeholder="Tell me about your project..." required></textarea>
                 </div>
                 <button type="submit" class="btn-submit">
-                    <i class="fas fa-paper-plane"></i> Send Message
+                    <i class="fas fa-paper-plane"></i> <span data-i18n="contact.submitBtn">Send Message</span>
                 </button>
             </form>
         </div>
@@ -1723,17 +1802,267 @@
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <p class="footer-text">� 2026 Alex Morgan. Crafted with passion.</p>
+            <p class="footer-text" data-i18n="footer.text">© 2026 Alex Morgan. Crafted with passion.</p>
             <div class="footer-links">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#projects">Projects</a>
-                <a href="#contact">Contact</a>
+                <a href="#home" data-i18n="nav.home">Home</a>
+                <a href="#about" data-i18n="nav.about">About</a>
+                <a href="#projects" data-i18n="nav.projects">Projects</a>
+                <a href="#contact" data-i18n="nav.contact">Contact</a>
             </div>
         </div>
     </footer>
 
     <script>
+        // Translations
+        const translations = {
+            en: {
+                'nav.home': 'Home',
+                'nav.about': 'About',
+                'nav.skills': 'Skills',
+                'nav.projects': 'Projects',
+                'nav.experience': 'Experience',
+                'nav.contact': 'Contact',
+                'hero.badge': 'Available for freelance work',
+                'hero.greeting': "Hi, I'm",
+                'hero.role': 'Full-Stack Developer',
+                'hero.subtitle': 'I craft beautiful, performant web experiences with modern technologies. Turning complex problems into elegant digital solutions.',
+                'hero.btnWork': 'View My Work',
+                'hero.btnContact': 'Get In Touch',
+                'hero.statYears': 'Years Experience',
+                'hero.statProjects': 'Projects Completed',
+                'hero.statClients': 'Happy Clients',
+                'about.tag': 'About Me',
+                'about.title': 'Passionate About Creating Impact',
+                'about.desc': 'A developer who loves turning ideas into reality through code',
+                'about.floatCode': 'Clean Code',
+                'about.floatDesign': 'UI/UX Design',
+                'about.heading': 'Building Digital Experiences That Matter',
+                'about.p1': "I'm a full-stack developer based in San Francisco with over 5 years of experience building web applications. I specialize in creating scalable, user-friendly solutions that drive business growth.",
+                'about.p2': "When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, or sharing knowledge through tech blogs and community meetups.",
+                'about.detail1': 'San Francisco, CA',
+                'about.detail2': 'Full-time & Freelance',
+                'about.detail3': 'CS, Stanford University',
+                'about.detail4': 'English, Khmer',
+                'skills.tag': 'My Skills',
+                'skills.title': 'Technologies I Work With',
+                'skills.desc': 'Constantly learning and adapting to the latest tools and frameworks',
+                'skills.s1.title': 'Frontend Development',
+                'skills.s1.desc': 'Building responsive and interactive user interfaces with modern frameworks',
+                'skills.s2.title': 'Backend Development',
+                'skills.s2.desc': 'Designing robust APIs and server-side architectures for scalable applications',
+                'skills.s3.title': 'Mobile Development',
+                'skills.s3.desc': 'Creating cross-platform mobile applications with native-like performance',
+                'skills.s4.title': 'Cloud & DevOps',
+                'skills.s4.desc': 'Deploying and managing applications with modern cloud infrastructure',
+                'skills.s5.title': 'UI/UX Design',
+                'skills.s5.desc': 'Crafting intuitive and beautiful user experiences from concept to delivery',
+                'skills.s6.title': 'AI & Machine Learning',
+                'skills.s6.desc': 'Integrating intelligent features and data-driven solutions into applications',
+                'projects.tag': 'My Work',
+                'projects.title': 'Featured Projects',
+                'projects.desc': 'A selection of projects that showcase my skills and passion',
+                'projects.p1.cat': 'Web Application',
+                'projects.p1.desc': 'A comprehensive project management platform with real-time collaboration, Kanban boards, and team analytics.',
+                'projects.p2.cat': 'Mobile App',
+                'projects.p2.desc': 'A health tracking mobile app with AI-powered insights, workout plans, and nutrition guidance for users.',
+                'projects.p3.cat': 'E-Commerce',
+                'projects.p3.desc': 'A modern e-commerce platform with AR product preview, smart recommendations, and seamless checkout.',
+                'projects.liveDemo': 'Live Demo',
+                'projects.sourceCode': 'Source Code',
+                'exp.tag': 'Experience',
+                'exp.title': 'My Professional Journey',
+                'exp.desc': 'A timeline of my career growth and achievements',
+                'exp.present': 'Present',
+                'exp.e1.title': 'Senior Full-Stack Developer',
+                'exp.e1.desc': 'Leading a team of 8 developers building enterprise SaaS products. Architected microservices handling 1M+ daily requests. Reduced deployment time by 60% through CI/CD optimization.',
+                'exp.e2.title': 'Full-Stack Developer',
+                'exp.e2.desc': 'Developed and maintained multiple client-facing applications. Implemented real-time features using WebSockets. Mentored junior developers and conducted code reviews.',
+                'exp.e3.title': 'Frontend Developer',
+                'exp.e3.desc': 'Built responsive web applications for various clients. Specialized in React ecosystem and modern CSS. Improved site performance scores by an average of 40%.',
+                'exp.e4.title': 'Junior Developer',
+                'exp.e4.desc': 'Started my professional journey building MVPs for early-stage startups. Gained experience across the full development lifecycle from concept to deployment.',
+                'test.tag': 'Testimonials',
+                'test.title': 'What People Say',
+                'test.desc': "Feedback from clients and colleagues I've worked with",
+                'test.t1.text': '"Alex delivered an exceptional product that exceeded our expectations. The attention to detail and code quality was outstanding. Highly recommend!"',
+                'test.t1.role': 'CEO, TechStart Inc.',
+                'test.t2.text': '"Working with Alex was a game-changer for our project. Their technical expertise and problem-solving skills are truly impressive. A pleasure to collaborate with."',
+                'test.t2.role': 'CTO, DataFlow Systems',
+                'test.t3.text': '"Alex transformed our outdated platform into a modern, scalable application. Communication was excellent throughout the entire project. Will definitely work together again."',
+                'test.t3.role': 'Product Manager, CloudNine',
+                'contact.tag': 'Contact',
+                'contact.title': "Let's Work Together",
+                'contact.desc': "Have a project in mind? Let's create something amazing",
+                'contact.heading': 'Get In Touch',
+                'contact.intro': "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.",
+                'contact.emailLabel': 'Email',
+                'contact.phoneLabel': 'Phone',
+                'contact.locationLabel': 'Location',
+                'contact.location': 'San Francisco, CA',
+                'contact.nameLabel': 'Your Name',
+                'contact.namePlaceholder': 'John Doe',
+                'contact.emailInputLabel': 'Your Email',
+                'contact.emailPlaceholder': 'john@example.com',
+                'contact.subjectLabel': 'Subject',
+                'contact.subjectPlaceholder': 'Project Discussion',
+                'contact.messageLabel': 'Message',
+                'contact.messagePlaceholder': 'Tell me about your project...',
+                'contact.submitBtn': 'Send Message',
+                'contact.submitSuccess': 'Message Sent!',
+                'footer.text': '© 2026 Alex Morgan. Crafted with passion.',
+                'page.title': 'Alex Morgan | Portfolio'
+            },
+            kh: {
+                'nav.home': 'ទំព័រដើម',
+                'nav.about': 'អំពីខ្ញុំ',
+                'nav.skills': 'ជំនាញ',
+                'nav.projects': 'គម្រោង',
+                'nav.experience': 'បទពិសោធន៍',
+                'nav.contact': 'ទំនាក់ទំនង',
+                'hero.badge': 'ទទួលការងារ Freelance',
+                'hero.greeting': 'សួស្តី ខ្ញុំឈ្មោះ',
+                'hero.role': 'អ្នកអភិវឌ្ឍន៍ Full-Stack',
+                'hero.subtitle': 'ខ្ញុំបង្កើតបទពិសោធន៍គេហទំព័រដ៏ស្រស់ស្អាត និងមានដំណើរការខ្ពស់ ដោយប្រើបច្ចេកវិទ្យាទំនើប។ ប្រែក្លាយបញ្ហាស្មុគស្មាញទៅជាដំណោះស្រាយឌីជីថលដ៏ល្អឥតខ្ចោះ។',
+                'hero.btnWork': 'មើលការងាររបស់ខ្ញុំ',
+                'hero.btnContact': 'ទាក់ទងមកខ្ញុំ',
+                'hero.statYears': 'ឆ្នាំបទពិសោធន៍',
+                'hero.statProjects': 'គម្រោងបានបញ្ចប់',
+                'hero.statClients': 'អតិថិជនពេញចិត្ត',
+                'about.tag': 'អំពីខ្ញុំ',
+                'about.title': 'មានចំណង់ចំណូលចិត្តក្នុងការបង្កើតផលប៉ះពាល់',
+                'about.desc': 'អ្នកអភិវឌ្ឍន៍ដែលចូលចិត្តប្រែក្លាយគំនិតទៅជាការពិតតាមរយៈកូដ',
+                'about.floatCode': 'កូដស្អាត',
+                'about.floatDesign': 'រចនា UI/UX',
+                'about.heading': 'បង្កើតបទពិសោធន៍ឌីជីថលដែលមានសារៈសំខាន់',
+                'about.p1': 'ខ្ញុំជាអ្នកអភិវឌ្ឍន៍ full-stack ដែលរស់នៅទីក្រុង San Francisco ជាមួយបទពិសោធន៍ជាង ៥ ឆ្នាំក្នុងការបង្កើតកម្មវិធីគេហទំព័រ។ ខ្ញុំជំនាញក្នុងការបង្កើតដំណោះស្រាយដែលអាចពង្រីកបាន និងងាយស្រួលប្រើ ដែលជំរុញកំណើនអាជីវកម្ម។',
+                'about.p2': 'នៅពេលដែលខ្ញុំមិនសរសេរកូដ អ្នកនឹងឃើញខ្ញុំកំពុងស្វែងយល់បច្ចេកវិទ្យាថ្មីៗ ចូលរួមចំណែកក្នុងគម្រោង open-source ឬចែករំលែកចំណេះដឹងតាមរយៈប្លក់បច្ចេកវិទ្យា និងការជួបជុំសហគមន៍។',
+                'about.detail1': 'San Francisco, CA',
+                'about.detail2': 'ពេញម៉ោង និង Freelance',
+                'about.detail3': 'CS, សាកលវិទ្យាល័យ Stanford',
+                'about.detail4': 'អង់គ្លេស, ខ្មែរ',
+                'skills.tag': 'ជំនាញរបស់ខ្ញុំ',
+                'skills.title': 'បច្ចេកវិទ្យាដែលខ្ញុំធ្វើការ',
+                'skills.desc': 'រៀនសូត្រ និងសម្របខ្លួនជាប្រចាំទៅតាមឧបករណ៍ និង frameworks ថ្មីៗ',
+                'skills.s1.title': 'អភិវឌ្ឍន៍ Frontend',
+                'skills.s1.desc': 'បង្កើតចំណុចប្រទាក់អ្នកប្រើប្រាស់ដែលឆ្លើយតប និងអន្តរកម្មជាមួយ frameworks ទំនើប',
+                'skills.s2.title': 'អភិវឌ្ឍន៍ Backend',
+                'skills.s2.desc': 'រចនា APIs ដ៏រឹងមាំ និងស្ថាបត្យកម្ម server-side សម្រាប់កម្មវិធីដែលអាចពង្រីកបាន',
+                'skills.s3.title': 'អភិវឌ្ឍន៍ទូរស័ព្ទ',
+                'skills.s3.desc': 'បង្កើតកម្មវិធីទូរស័ព្ទ cross-platform ជាមួយដំណើរការដូច native',
+                'skills.s4.title': 'Cloud និង DevOps',
+                'skills.s4.desc': 'ដាក់ពង្រាយ និងគ្រប់គ្រងកម្មវិធីជាមួយហេដ្ឋារចនាសម្ព័ន្ធ cloud ទំនើប',
+                'skills.s5.title': 'រចនា UI/UX',
+                'skills.s5.desc': 'បង្កើតបទពិសោធន៍អ្នកប្រើប្រាស់ដ៏អស្ចារ្យពីគំនិតរហូតដល់ការដឹកជញ្ជូន',
+                'skills.s6.title': 'AI និង Machine Learning',
+                'skills.s6.desc': 'បញ្ចូលមុខងារឆ្លាតវៃ និងដំណោះស្រាយដែលផ្អែកលើទិន្នន័យទៅក្នុងកម្មវិធី',
+                'projects.tag': 'ការងាររបស់ខ្ញុំ',
+                'projects.title': 'គម្រោងពិសេស',
+                'projects.desc': 'ជម្រើសគម្រោងដែលបង្ហាញពីជំនាញ និងចំណង់ចំណូលចិត្តរបស់ខ្ញុំ',
+                'projects.p1.cat': 'កម្មវិធីគេហទំព័រ',
+                'projects.p1.desc': 'វេទិកាគ្រប់គ្រងគម្រោងដ៏ទូលំទូលាយជាមួយកិច្ចសហការពេលវេលាជាក់ស្តែង ក្តារ Kanban និងការវិភាគក្រុម។',
+                'projects.p2.cat': 'កម្មវិធីទូរស័ព្ទ',
+                'projects.p2.desc': 'កម្មវិធីទូរស័ព្ទតាមដានសុខភាពជាមួយការយល់ដឹងដោយ AI ផែនការហាត់ប្រាណ និងការណែនាំអាហារូបត្ថម្ភ។',
+                'projects.p3.cat': 'ពាណិជ្ជកម្មអេឡិចត្រូនិច',
+                'projects.p3.desc': 'វេទិកាពាណិជ្ជកម្មអេឡិកត្រូនិចទំនើបជាមួយការមើលផលិតផល AR ការណែនាំឆ្លាតវៃ និងការទូទាត់ដ៏រលូន។',
+                'projects.liveDemo': 'សាកល្បងផ្ទាល់',
+                'projects.sourceCode': 'កូដប្រភព',
+                'exp.tag': 'បទពិសោធន៍',
+                'exp.title': 'ដំណើរវិជ្ជាជីវៈរបស់ខ្ញុំ',
+                'exp.desc': 'បន្ទាត់ពេលវេលានៃកំណើនអាជីព និងសមិទ្ធផលរបស់ខ្ញុំ',
+                'exp.present': 'បច្ចុប្បន្ន',
+                'exp.e1.title': 'អ្នកអភិវឌ្ឍន៍ Full-Stack ជាន់ខ្ពស់',
+                'exp.e1.desc': 'ដឹកនាំក្រុមអ្នកអភិវឌ្ឍន៍ ៨ នាក់ក្នុងការបង្កើតផលិតផល SaaS សហគ្រាស។ បានរចនា microservices ដែលដោះស្រាយសំណើ ១លាន+ ក្នុងមួយថ្ងៃ។ កាត់បន្ថយពេលវេលា deploy ៦០% តាមរយៈការបង្កើនប្រសិទ្ធភាព CI/CD។',
+                'exp.e2.title': 'អ្នកអភិវឌ្ឍន៍ Full-Stack',
+                'exp.e2.desc': 'បានអភិវឌ្ឍ និងថែរក្សាកម្មវិធីជាច្រើនសម្រាប់អតិថិជន។ បានអនុវត្តមុខងារពេលវេលាជាក់ស្តែងដោយប្រើ WebSockets។ បានណែនាំអ្នកអភិវឌ្ឍន៍ជាន់ទាប និងធ្វើការពិនិត្យកូដ។',
+                'exp.e3.title': 'អ្នកអភិវឌ្ឍន៍ Frontend',
+                'exp.e3.desc': 'បានបង្កើតកម្មវិធីគេហទំព័រឆ្លើយតបសម្រាប់អតិថិជនជាច្រើន។ ជំនាញក្នុងប្រព័ន្ធ React និង CSS ទំនើប។ បានបង្កើនពិន្ទុដំណើរការគេហទំព័រជាមធ្យម ៤០%។',
+                'exp.e4.title': 'អ្នកអភិវឌ្ឍន៍ជាន់ទាប',
+                'exp.e4.desc': 'បានចាប់ផ្តើមដំណើរវិជ្ជាជីវៈរបស់ខ្ញុំក្នុងការបង្កើត MVP សម្រាប់ startups ដំណាក់កាលដំបូង។ ទទួលបានបទពិសោធន៍ពេញលេញក្នុងវដ្តអភិវឌ្ឍន៍ពីគំនិតរហូតដល់ការដាក់ពង្រាយ។',
+                'test.tag': 'សក្ខីកម្ម',
+                'test.title': 'អ្វីដែលគេនិយាយ',
+                'test.desc': 'មតិត្រឡប់ពីអតិថិជន និងសហការីដែលខ្ញុំបានធ្វើការជាមួយ',
+                'test.t1.text': '"Alex បានផ្តល់ផលិតផលដ៏ពិសេសដែលលើសពីការរំពឹងទុករបស់យើង។ ការយកចិត្តទុកដាក់លើព័ត៌មានលម្អិត និងគុណភាពកូដគឺល្អឥតខ្ចោះ។ ណែនាំខ្លាំង!"',
+                'test.t1.role': 'នាយកប្រតិបត្តិ, TechStart Inc.',
+                'test.t2.text': '"ការធ្វើការជាមួយ Alex គឺជាការផ្លាស់ប្តូរហ្គេមសម្រាប់គម្រោងរបស់យើង។ ជំនាញបច្ចេកទេស និងជំនាញដោះស្រាយបញ្ហារបស់គាត់ពិតជាគួរឱ្យចាប់អារម្មណ៍។ ពិតជាមានក្តីរីករាយក្នុងការសហការ។"',
+                'test.t2.role': 'ប្រធានផ្នែកបច្ចេកវិទ្យា, DataFlow Systems',
+                'test.t3.text': '"Alex បានប្រែក្លាយវេទិកាចាស់របស់យើងទៅជាកម្មវិធីទំនើបដែលអាចពង្រីកបាន។ ការទំនាក់ទំនងគឺល្អឥតខ្ចោះពេញមួយគម្រោង។ ប្រាកដជាធ្វើការជាមួយគ្នាម្តងទៀត។"',
+                'test.t3.role': 'អ្នកគ្រប់គ្រងផលិតផល, CloudNine',
+                'contact.tag': 'ទំនាក់ទំនង',
+                'contact.title': 'តោះធ្វើការជាមួយគ្នា',
+                'contact.desc': 'មានគម្រោងក្នុងចិត្ត? តោះបង្កើតអ្វីដែលអស្ចារ្យ',
+                'contact.heading': 'ទាក់ទងមកខ្ញុំ',
+                'contact.intro': 'ខ្ញុំតែងតែបើកចំហសម្រាប់ការពិភាក្សាអំពីគម្រោងថ្មី គំនិតច្នៃប្រឌិត ឬឱកាសក្នុងការចូលរួមក្នុងចក្ខុវិស័យរបស់អ្នក។',
+                'contact.emailLabel': 'អ៊ីមែល',
+                'contact.phoneLabel': 'ទូរស័ព្ទ',
+                'contact.locationLabel': 'ទីតាំង',
+                'contact.location': 'San Francisco, CA',
+                'contact.nameLabel': 'ឈ្មោះរបស់អ្នក',
+                'contact.namePlaceholder': 'ចន ដូ',
+                'contact.emailInputLabel': 'អ៊ីមែលរបស់អ្នក',
+                'contact.emailPlaceholder': 'john@example.com',
+                'contact.subjectLabel': 'ប្រធានបទ',
+                'contact.subjectPlaceholder': 'ការពិភាក្សាគម្រោង',
+                'contact.messageLabel': 'សារ',
+                'contact.messagePlaceholder': 'ប្រាប់ខ្ញុំអំពីគម្រោងរបស់អ្នក...',
+                'contact.submitBtn': 'ផ្ញើសារ',
+                'contact.submitSuccess': 'សារបានផ្ញើ!',
+                'footer.text': '© ២០២៦ Alex Morgan។ បង្កើតដោយក្តីស្រឡាញ់។',
+                'page.title': 'Alex Morgan | ផូតផូលីយ៉ូ'
+            }
+        };
+
+        let currentLang = localStorage.getItem('portfolioLang') || 'en';
+
+        // Apply language
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('portfolioLang', lang);
+            
+            // Update body class for font switching
+            if (lang === 'kh') {
+                document.body.classList.add('lang-kh');
+                document.documentElement.lang = 'km';
+            } else {
+                document.body.classList.remove('lang-kh');
+                document.documentElement.lang = 'en';
+            }
+
+            // Update page title
+            document.title = translations[lang]['page.title'];
+
+            // Update all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            // Update active state of language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+        }
+
+        // Language switcher event listeners
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                applyLanguage(lang);
+            });
+        });
+
+        // Initialize language on load
+        applyLanguage(currentLang);
+
         // Navigation scroll effect
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
@@ -1796,12 +2125,15 @@
             e.preventDefault();
             
             const btn = contactForm.querySelector('.btn-submit');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+            const btnSpan = btn.querySelector('[data-i18n]');
+            const originalText = btnSpan.textContent;
+            const successText = translations[currentLang]['contact.submitSuccess'];
+            
+            btnSpan.textContent = successText;
             btn.style.background = 'linear-gradient(135deg, #00d4aa, #00b4d8)';
             
             setTimeout(() => {
-                btn.innerHTML = originalText;
+                btnSpan.textContent = originalText;
                 btn.style.background = '';
                 contactForm.reset();
             }, 3000);
